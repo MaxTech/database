@@ -1,4 +1,4 @@
-module github.com/MaxTech/database
+module github.com/maxtech/database
 
 go 1.12
 
