@@ -3,7 +3,6 @@ package mysql_database
 import (
     "fmt"
     "github.com/go-xorm/core"
-    "github.com/go-xorm/xorm"
     "log"
     "os"
     "path/filepath"
@@ -13,10 +12,6 @@ import (
 var (
     logger *dbLogger
 )
-
-func init() {
-    logger = newLogger("[mysql database]", xorm.DEFAULT_LOG_FLAG)
-}
 
 func GetLogger() *dbLogger {
     return logger

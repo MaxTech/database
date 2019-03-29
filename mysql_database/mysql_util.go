@@ -2,6 +2,7 @@ package mysql_database
 
 import (
     "fmt"
+    _ "github.com/go-sql-driver/mysql"
     "github.com/go-xorm/xorm"
     "log"
 )
@@ -22,6 +23,7 @@ func (mu *mySQLUtil) InitMySQLEngine(address string, username string, password s
         log.Fatal("Database connect error: ", err)
     }
     //defer engine.Close()
+    logger = newLogger(fmt.Sprintf("[%s]", dbname), xorm.DEFAULT_LOG_FLAG)
     return engine
 }
 
