@@ -3,19 +3,12 @@ package mysql_database
 import (
     "fmt"
     "github.com/go-xorm/core"
+    "github.com/go-xorm/xorm"
     "log"
     "os"
     "path/filepath"
     "time"
 )
-
-var (
-    logger *dbLogger
-)
-
-func GetLogger() *dbLogger {
-    return logger
-}
 
 // SimpleLogger is the default implment of core.ILogger
 type dbLogger struct {
@@ -29,8 +22,16 @@ type dbLogger struct {
 
 var _ core.ILogger = &dbLogger{}
 
+func CheckMySQLEngine(engine *xorm.Engine) bool {
+    err := engine.Ping()
+    if err != nil {
+        return false
+    }
+    return true
+}
+
 // newLogger let you customrize your logger prefix and flag
-func newLogger(prefix string, flag int) *dbLogger {
+func NewSqlLogger(prefix string, flag int) *dbLogger {
     return initLogger(prefix, flag, core.LOG_INFO)
 }
 

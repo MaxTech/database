@@ -38,14 +38,6 @@ func (mp *mySQLPool) GetEngine() *xorm.Engine {
     engine.ShowExecTime(mp.logSqlFlag)
     engine.ShowSQL(mp.logSqlFlag)
     engine.SetLogger(
-        newLogger(fmt.Sprintf("[%s]", mp.loggerName), xorm.DEFAULT_LOG_FLAG))
+        NewSqlLogger(fmt.Sprintf("[%s]", mp.loggerName), xorm.DEFAULT_LOG_FLAG))
     return engine
-}
-
-func (mp *mySQLPool) CheckMySQLEngine(engine *xorm.Engine) bool {
-    err := engine.Ping()
-    if err != nil {
-        return false
-    }
-    return true
 }
