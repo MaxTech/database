@@ -16,14 +16,14 @@ func init() {
     Util = new(util)
 }
 
-type mySQLPool struct {
+type MySQLPool struct {
     linkString string
     loggerName string
     logSql bool
 }
 
-func (u *util) Init(address, username, password, dbname string, logSql bool) *mySQLPool {
-    return &mySQLPool{
+func (u *util) Init(address, username, password, dbname string, logSql bool) *MySQLPool {
+    return &MySQLPool{
         linkString: fmt.Sprintf(
             "%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&timeout=2s",
             username,
@@ -35,7 +35,7 @@ func (u *util) Init(address, username, password, dbname string, logSql bool) *my
     }
 }
 
-func (mp *mySQLPool) GetEngine() *xorm.Engine {
+func (mp *MySQLPool) GetEngine() *xorm.Engine {
     engine, err := xorm.NewEngine("mysql", mp.linkString)
     if err != nil {
         log.Fatal("Database connect error: ", err)
