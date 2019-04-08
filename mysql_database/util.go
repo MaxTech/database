@@ -19,7 +19,7 @@ func init() {
 type MySQLPool struct {
     linkString string
     loggerName string
-    logSql bool
+    logSql     bool
 }
 
 func (u *util) Init(address, username, password, dbname string, logSql bool) *MySQLPool {
@@ -30,8 +30,21 @@ func (u *util) Init(address, username, password, dbname string, logSql bool) *My
             password,
             address,
             dbname),
-            loggerName: dbname,
-            logSql: logSql,
+        loggerName: dbname,
+        logSql:     logSql,
+    }
+}
+
+func (u *util) InitByConfig(mySQLConfig MySQLConfigFormat, logSql bool) *MySQLPool {
+    return &MySQLPool{
+        linkString: fmt.Sprintf(
+            "%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&timeout=2s",
+            mySQLConfig.Username,
+            mySQLConfig.Password,
+            mySQLConfig.Address,
+            mySQLConfig.DBName),
+        loggerName: mySQLConfig.DBName,
+        logSql:     logSql,
     }
 }
 

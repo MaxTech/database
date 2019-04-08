@@ -52,7 +52,7 @@ func (s *dbLogger) Error(v ...interface{}) {
         fileWriter := s.newWriter()
         s.ERR.SetOutput(fileWriter)
         defer fileWriter.Close()
-        s.ERR.Output(2, fmt.Sprint(v...))
+        _ = s.ERR.Output(2, fmt.Sprint(v...))
     }
     return
 }
@@ -63,7 +63,7 @@ func (s *dbLogger) Errorf(format string, v ...interface{}) {
         fileWriter := s.newWriter()
         s.ERR.SetOutput(fileWriter)
         defer fileWriter.Close()
-        s.ERR.Output(2, fmt.Sprintf(format, v...))
+        _ = s.ERR.Output(2, fmt.Sprintf(format, v...))
     }
     return
 }
@@ -74,7 +74,7 @@ func (s *dbLogger) Debug(v ...interface{}) {
         fileWriter := s.newWriter()
         s.DEBUG.SetOutput(fileWriter)
         defer fileWriter.Close()
-        s.DEBUG.Output(2, fmt.Sprint(v...))
+        _ = s.DEBUG.Output(2, fmt.Sprint(v...))
     }
     return
 }
@@ -85,7 +85,7 @@ func (s *dbLogger) Debugf(format string, v ...interface{}) {
         fileWriter := s.newWriter()
         s.DEBUG.SetOutput(fileWriter)
         defer fileWriter.Close()
-        s.DEBUG.Output(2, fmt.Sprintf(format, v...))
+        _ = s.DEBUG.Output(2, fmt.Sprintf(format, v...))
     }
     return
 }
@@ -96,7 +96,7 @@ func (s *dbLogger) Info(v ...interface{}) {
         fileWriter := s.newWriter()
         s.INFO.SetOutput(fileWriter)
         defer fileWriter.Close()
-        s.INFO.Output(2, fmt.Sprint(v...))
+        _ = s.INFO.Output(2, fmt.Sprint(v...))
     }
     return
 }
@@ -107,7 +107,7 @@ func (s *dbLogger) Infof(format string, v ...interface{}) {
         fileWriter := s.newWriter()
         s.INFO.SetOutput(fileWriter)
         defer fileWriter.Close()
-        s.INFO.Output(2, fmt.Sprintf(format, v...))
+        _ = s.INFO.Output(2, fmt.Sprintf(format, v...))
     }
     return
 }
@@ -118,7 +118,7 @@ func (s *dbLogger) Warn(v ...interface{}) {
         fileWriter := s.newWriter()
         s.WARN.SetOutput(fileWriter)
         defer fileWriter.Close()
-        s.WARN.Output(2, fmt.Sprint(v...))
+        _ = s.WARN.Output(2, fmt.Sprint(v...))
     }
     return
 }
@@ -129,7 +129,7 @@ func (s *dbLogger) Warnf(format string, v ...interface{}) {
         fileWriter := s.newWriter()
         s.WARN.SetOutput(fileWriter)
         defer fileWriter.Close()
-        s.WARN.Output(2, fmt.Sprintf(format, v...))
+        _ = s.WARN.Output(2, fmt.Sprintf(format, v...))
     }
     return
 }
