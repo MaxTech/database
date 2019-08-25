@@ -16,14 +16,18 @@ func init() {
     Util = new(util)
 }
 
-type MySQLPool struct {
+type MySQLPool interface {
+    GetEngine() *xorm.Engine
+}
+
+type mySQLPool struct {
     linkString string
     loggerName string
     logSql     bool
 }
 
-func (u *util) Init(address, username, password, dbname string, logSql bool) *MySQLPool {
-    return &MySQLPool{
+func (u *util) InitMySQLPool(address, username, password, dbname string, logSql bool) MySQLPool {
+    return &mySQLPool{
         linkString: fmt.Sprintf(
             "%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&timeout=2s",
             username,
@@ -35,8 +39,8 @@ func (u *util) Init(address, username, password, dbname string, logSql bool) *My
     }
 }
 
-func (u *util) InitByConfig(mySQLConfig MySQLConfigFormat, logSql bool) *MySQLPool {
-    return &MySQLPool{
+func (u *util) InitMySQLPoolByConfig(mySQLConfig MySQLConfigFormat, logSql bool) MySQLPool {
+    return &mySQLPool{
         linkString: fmt.Sprintf(
             "%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&timeout=2s",
             mySQLConfig.Username,
@@ -48,14 +52,14 @@ func (u *util) InitByConfig(mySQLConfig MySQLConfigFormat, logSql bool) *MySQLPo
     }
 }
 
-func (mp *MySQLPool) GetEngine() *xorm.Engine {
-    engine, err := xorm.NewEngine("mysql", mp.linkString)
+func (wmp *mySQLPool) GetEngine() *xorm.Engine {
+    engine, err := xorm.NewEngine("mysql", wmp.linkString)
     if err != nil {
-        log.Fatal("Database connect error: ", err)
+        log.Fatal("Write Database connect error: ", err)
     }
-    engine.ShowExecTime(mp.logSql)
-    engine.ShowSQL(mp.logSql)
+    engine.ShowExecTime(wmp.logSql)
+    engine.ShowSQL(wmp.logSql)
     engine.SetLogger(
-        NewSqlLogger(fmt.Sprintf("[%s]", mp.loggerName), xorm.DEFAULT_LOG_FLAG))
+        NewSqlLogger(fmt.Sprintf("[%s]", wmp.loggerName), xorm.DEFAULT_LOG_FLAG))
     return engine
 }
