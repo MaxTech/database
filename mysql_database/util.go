@@ -26,28 +26,22 @@ type mySQLPool struct {
     logSql     bool
 }
 
-func (u *util) InitMySQLPool(address, username, password, dbname string, logSql bool) MySQLPool {
+func (u *util) InitMySQLPool(_address, _username, _password, _dbname string, _logSql bool) MySQLPool {
     return &mySQLPool{
         linkString: fmt.Sprintf(
             "%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&timeout=2s",
-            username,
-            password,
-            address,
-            dbname),
-        loggerName: dbname,
-        logSql:     logSql,
+            _username, _password, _address, _dbname),
+        loggerName: _dbname,
+        logSql:     _logSql,
     }
 }
 
-func (u *util) InitMySQLPoolByConfig(mySQLConfig MySQLConfigFormat, logSql bool) MySQLPool {
+func (u *util) InitMySQLPoolByConfig(_mySQLConfig MySQLConfigFormat, logSql bool) MySQLPool {
     return &mySQLPool{
         linkString: fmt.Sprintf(
             "%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&timeout=2s",
-            mySQLConfig.Username,
-            mySQLConfig.Password,
-            mySQLConfig.Address,
-            mySQLConfig.DBName),
-        loggerName: mySQLConfig.DBName,
+            _mySQLConfig.Username, _mySQLConfig.Password, _mySQLConfig.Address, _mySQLConfig.DBName),
+        loggerName: _mySQLConfig.DBName,
         logSql:     logSql,
     }
 }
@@ -57,9 +51,9 @@ func (wmp *mySQLPool) GetEngine() *xorm.Engine {
     if err != nil {
         log.Fatal("Write Database connect error: ", err)
     }
+    selfLogger := NewSqlFileLogger(fmt.Sprintf("[%s]", wmp.loggerName), xorm.DEFAULT_LOG_FLAG)
+    engine.SetLogger(selfLogger)
     engine.ShowExecTime(wmp.logSql)
     engine.ShowSQL(wmp.logSql)
-    engine.SetLogger(
-        NewSqlLogger(fmt.Sprintf("[%s]", wmp.loggerName), xorm.DEFAULT_LOG_FLAG))
     return engine
 }
