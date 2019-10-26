@@ -12,7 +12,7 @@ import (
 
 // SimpleLogger is the default implment of core.ILogger
 type fileLogger struct {
-    xorm.SimpleLogger
+    *xorm.SimpleLogger
 }
 
 //var _ core.ILogger = &fileLogger{}
@@ -33,7 +33,7 @@ func NewSqlFileLogger(_prefix string, _flag int) *fileLogger {
 // initLogger let you customrize your logger prefix and flag and logLevel
 func initLogger(_prefix string, _flag int, _logLevel core.LogLevel) *fileLogger {
     logger := &fileLogger{
-        SimpleLogger: xorm.SimpleLogger{
+        SimpleLogger: &xorm.SimpleLogger{
             DEBUG: log.New(nil, fmt.Sprintf("%s [DEBUG] ", _prefix), _flag),
             ERR:   log.New(nil, fmt.Sprintf("%s [ERROR] ", _prefix), _flag),
             INFO:  log.New(nil, fmt.Sprintf("%s [INFO]  ", _prefix), _flag),
@@ -48,56 +48,56 @@ func initLogger(_prefix string, _flag int, _logLevel core.LogLevel) *fileLogger 
 func (fl *fileLogger) Error(_v ...interface{}) {
     fl.refreshOutput(fl.ERR)
     fl.SimpleLogger.Error(_v...)
-   return
+    return
 }
 
 // ErrorF implement core.ILogger
 func (fl *fileLogger) Errorf(_format string, _v ...interface{}) {
     fl.refreshOutput(fl.ERR)
     fl.SimpleLogger.Errorf(_format, _v...)
-   return
+    return
 }
 
 // Debug implement core.ILogger
 func (fl *fileLogger) Debug(_v ...interface{}) {
     fl.refreshOutput(fl.DEBUG)
     fl.SimpleLogger.Debug(_v...)
-   return
+    return
 }
 
 // DebugF implement core.ILogger
 func (fl *fileLogger) Debugf(_format string, _v ...interface{}) {
     fl.refreshOutput(fl.DEBUG)
     fl.SimpleLogger.Debugf(_format, _v...)
-   return
+    return
 }
 
 // Info implement core.ILogger
 func (fl *fileLogger) Info(_v ...interface{}) {
     fl.refreshOutput(fl.INFO)
     fl.SimpleLogger.Info(_v...)
-   return
+    return
 }
 
 // InfoF implement core.ILogger
 func (fl *fileLogger) Infof(_format string, _v ...interface{}) {
     fl.refreshOutput(fl.INFO)
     fl.SimpleLogger.Infof(_format, _v...)
-   return
+    return
 }
 
 // Warn implement core.ILogger
 func (fl *fileLogger) Warn(_v ...interface{}) {
     fl.refreshOutput(fl.WARN)
     fl.SimpleLogger.Warn(_v...)
-   return
+    return
 }
 
 // WarnF implement core.ILogger
 func (fl *fileLogger) Warnf(_format string, _v ...interface{}) {
     fl.refreshOutput(fl.WARN)
     fl.SimpleLogger.Warnf(_format, _v...)
-   return
+    return
 }
 
 func (fl *fileLogger) refreshOutput(_logger *log.Logger) {
