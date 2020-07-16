@@ -3,8 +3,9 @@ package mysql_database
 import (
     "fmt"
     _ "github.com/go-sql-driver/mysql"
-    "github.com/go-xorm/xorm"
     "log"
+    "xorm.io/xorm"
+    xorm_log "xorm.io/xorm/log"
 )
 
 type util struct {
@@ -51,9 +52,8 @@ func (wmp *mySQLPool) GetEngine() *xorm.Engine {
     if err != nil {
         log.Fatal("Write Database connect error: ", err)
     }
-    selfLogger := NewSqlFileLogger(fmt.Sprintf("[%s]", wmp.loggerName), xorm.DEFAULT_LOG_FLAG)
+    selfLogger := NewSqlFileLogger(fmt.Sprintf("[%s]", wmp.loggerName), xorm_log.DEFAULT_LOG_FLAG)
     engine.SetLogger(selfLogger)
-    engine.ShowExecTime(wmp.logSql)
     engine.ShowSQL(wmp.logSql)
     return engine
 }

@@ -2,17 +2,17 @@ package mysql_database
 
 import (
     "fmt"
-    "github.com/go-xorm/xorm"
     "log"
     "os"
     "path/filepath"
     "time"
-    "xorm.io/core"
+    "xorm.io/xorm"
+    xorm_log "xorm.io/xorm/log"
 )
 
 // SimpleLogger is the default implment of core.ILogger
 type fileLogger struct {
-    *xorm.SimpleLogger
+    *xorm_log.SimpleLogger
 }
 
 //var _ core.ILogger = &fileLogger{}
@@ -27,13 +27,13 @@ func CheckMySQLEngine(_engine *xorm.Engine) bool {
 
 // newLogger let you customrize your logger prefix and flag
 func NewSqlFileLogger(_prefix string, _flag int) *fileLogger {
-    return initLogger(_prefix, _flag, core.LOG_INFO)
+    return initLogger(_prefix, _flag, xorm_log.LOG_INFO)
 }
 
 // initLogger let you customrize your logger prefix and flag and logLevel
-func initLogger(_prefix string, _flag int, _logLevel core.LogLevel) *fileLogger {
+func initLogger(_prefix string, _flag int, _logLevel xorm_log.LogLevel) *fileLogger {
     logger := &fileLogger{
-        SimpleLogger: &xorm.SimpleLogger{
+        SimpleLogger: &xorm_log.SimpleLogger{
             DEBUG: log.New(nil, fmt.Sprintf("%s [DEBUG] ", _prefix), _flag),
             ERR:   log.New(nil, fmt.Sprintf("%s [ERROR] ", _prefix), _flag),
             INFO:  log.New(nil, fmt.Sprintf("%s [INFO]  ", _prefix), _flag),
